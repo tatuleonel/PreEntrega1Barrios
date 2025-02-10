@@ -1,97 +1,110 @@
+// Crear elementos en el DOM
+const app = document.getElementById("app");
 
-// Preguntamos nombre y damos bienvenida
-let nombre = prompt("¿cuál es tu nombre?");
-console.log("Bienvenido, " + nombre);
+// Formulario para preguntar nombre
+const nombreInput = document.createElement("input");
+nombreInput.placeholder = "¿Cuál es tu nombre?";
+const nombreBtn = document.createElement("button");
+nombreBtn.textContent = "Ingresar";
+const bienvenida = document.createElement("p");
 
+// Evento para mostrar bienvenida
+nombreBtn.addEventListener("click", () => {
+    bienvenida.textContent = `Bienvenido, ${nombreInput.value}`;
+});
 
-// Preguntamos que está buscando y el talle
-let tipoDeRopa = prompt("Que estás buscando?");
-let talla = prompt("que talle eres?"); 
+// Formulario para elegir ropa
+tipoDeRopaInput = document.createElement("input");
+tipoDeRopaInput.placeholder = "¿Qué estás buscando?";
+tallaInput = document.createElement("input");
+tallaInput.placeholder = "¿Qué talle eres?";
+const ropaBtn = document.createElement("button");
+ropaBtn.textContent = "Buscar";
+const recomendacion = document.createElement("p");
 
-// Cumplimos las funciones que nos pide el cliente 
-if (tipoDeRopa == "camisa" && talla == "S") {
-    console.log("Te recomiendo la camisa de manga corta de color azul")
-} else if (tipoDeRopa == "camisa" && talla == "M"){
-    console.log("Te recomiendo la camisade manga larga de color rojo")
-} else if (tipoDeRopa == "camisa" && talla == "L") {
-    console.log("Te recomiendo la camisa de manga corta de color verde")
-} else if (tipoDeRopa == "pantalon" && talla == "S") {
-    console.log("Te recomendamos el pantalón negro");
-} else if (tipoDeRopa == "pantalon" && talla == "M") {
-    console.log("Te recomendamos el pantalón gris");
-} else if (tipoDeRopa == "pantalon" && talla == "L") {
-    console.log("Te recomendamos el pantalón azul");
-} 
-else {
-    console.log("No tenemos lo que buscas");
-}
-
-
-// Pedimos al usuario que ingrese las cantidades vendidas de cada modelo
-let zapatillasModelo1 = parseFloat(prompt("Ingrese la cantidad vendida del modelo 1:"));
-let zapatillasModelo2 = parseFloat(prompt("Ingrese la cantidad vendida del modelo 2:"));
-let zapatillasModelo3 = parseFloat(prompt("Ingrese la cantidad vendida del modelo 3:"));
-
-// Preguntamos al usuario si desea incluir un descuento en el cálculo
-let aplicarDescuento = confirm("¿Desea aplicar un descuento a las ventas? (Ok para sí, Cancelar para no)");
-
-// Función para calcular el promedio de ventas, opcionalmente con descuento
-function calcularPromedioVentas(modelo1, modelo2, modelo3, descuento) {
-let totalVentas = modelo1 + modelo2 + modelo3;
-if (descuento) {
-    totalVentas *= 0.9; // Aplica un descuento del 10%
-}
-let promedioVentas = totalVentas / 3;
-return promedioVentas;
-}
-
-// Llamamos a la función y mostramos el resultado
-let promedio = calcularPromedioVentas(zapatillasModelo1, zapatillasModelo2, zapatillasModelo3, aplicarDescuento);
-console.log("El promedio de ventas", (aplicarDescuento ? "con descuento" : ""), "es:", promedio, "zapatillas.");
-
-
-// Definimos los nombres de mis productos, talles y precios
-let productos = [
-    { nombre: "Jeans", tallas: ["S", "M", "L"], colores: ["azul", "negro"], estilos: ["slim", "regular"] },
-    { nombre: "Zapatillas Nike Air Max", precio: 120, tallas: [38, 39, 40], colores: ["negro", "blanco"] },
-    { nombre: "Camiseta algodón orgánico", precio: 25, tallas: ["S", "M", "L", "XL"], colores: ["blanco", "gris", "azul"] },
-];
-
-// Función para encontrar una recomendación basada en múltiples criterios
-function recomendar(tipoDeRopa, talla, estilo) {
-    for (let producto of productos) {
-        if (producto.nombre === tipoDeRopa && producto.tallas.includes(talla) && (estilo ? producto.estilos.includes(estilo) : true)) {
-        return producto;
-        }
+ropaBtn.addEventListener("click", () => {
+    let tipoDeRopa = tipoDeRopaInput.value.toLowerCase();
+    let talla = tallaInput.value.toUpperCase();
+    let precio = Math.floor(Math.random() * 50) + 20; // Genera un precio aleatorio entre 20 y 70
+    let mensaje;
+    
+    if (tipoDeRopa === "camisa" && talla === "S") {
+        mensaje = `Te recomiendo la camisa de manga corta de color azul - Precio: $${precio}`;
+    } else if (tipoDeRopa === "camisa" && talla === "M") {
+        mensaje = `Te recomiendo la camisa de manga larga de color rojo - Precio: $${precio}`;
+    } else if (tipoDeRopa === "camisa" && talla === "L") {
+        mensaje = `Te recomiendo la camisa de manga corta de color verde - Precio: $${precio}`;
+    } else if (tipoDeRopa === "pantalon" && talla === "S") {
+        mensaje = `Te recomendamos el pantalón negro - Precio: $${precio}`;
+    } else if (tipoDeRopa === "pantalon" && talla === "M") {
+        mensaje = `Te recomendamos el pantalón gris - Precio: $${precio}`;
+    } else if (tipoDeRopa === "pantalon" && talla === "L") {
+        mensaje = `Te recomendamos el pantalón azul - Precio: $${precio}`;
+    } else {
+        mensaje = "No tenemos lo que buscas";
     }
-    return "No tenemos lo que buscas";
-}
-let recomendacion = recomendar("Jeans", "M", "slim");
-console.log(recomendacion);
+    recomendacion.textContent = mensaje;
+});
 
-let nombresProductos = ["Zapatillas Nike Air Max", "Camiseta algodón orgánico"];
+// Carrito de compras con LocalStorage
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-let carrito = [
-    { producto: productos[0], cantidad: 2 },
-    { producto: productos[1], cantidad: 1 },
-];
-
-for (let i = 0; i < productos.length; i++) {
-    console.log("Producto:", productos[i].nombre);
-    console.log("Precio:", productos[i].precio);
-    console.log("Tallas disponibles:", productos[i].tallas);
-    console.log("Colores disponibles:", productos[i].colores);
+function agregarAlCarrito(producto) {
+    carrito.push(producto);
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    mostrarCarrito();
 }
 
-function calcularPrecioTotalProducto(producto, cantidad) {
-    return producto.precio * cantidad;
+function mostrarCarrito() {
+    const carritoContainer = document.getElementById("carrito") || document.createElement("div");
+    carritoContainer.id = "carrito";
+    carritoContainer.innerHTML = "<h2>Carrito de Compras</h2>";
+    
+    let total = 0;
+    if (carrito.length === 0) {
+        carritoContainer.innerHTML += "<p>El carrito está vacío.</p>";
+    } else {
+        carrito.forEach((producto, index) => {
+            total += producto.precio;
+            const item = document.createElement("p");
+            item.textContent = `${producto.tipo} - Talla: ${producto.talla} - Precio: $${producto.precio}`;
+            const removeBtn = document.createElement("button");
+            removeBtn.textContent = "Eliminar";
+            removeBtn.addEventListener("click", () => eliminarDelCarrito(index));
+            item.appendChild(removeBtn);
+            carritoContainer.appendChild(item);
+        });
+        const totalElement = document.createElement("p");
+        totalElement.textContent = `Total: $${total}`;
+        carritoContainer.appendChild(totalElement);
+    }
+    app.appendChild(carritoContainer);
 }
-let total = 0;
-for (let item of carrito) {
-    total += calcularPrecioTotalProducto(item.producto, item.cantidad);
+
+function eliminarDelCarrito(index) {
+    carrito.splice(index, 1);
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    mostrarCarrito();
 }
-console.log("El total de tu compra es:", total);
 
+// Ejemplo de agregar un producto
+ropaBtn.addEventListener("click", () => {
+    let producto = { 
+        tipo: tipoDeRopaInput.value, 
+        talla: tallaInput.value, 
+        precio: Math.floor(Math.random() * 50) + 20 
+    };
+    agregarAlCarrito(producto);
+});
 
+// Agregar elementos al DOM
+app.appendChild(nombreInput);
+app.appendChild(nombreBtn);
+app.appendChild(bienvenida);
+app.appendChild(tipoDeRopaInput);
+app.appendChild(tallaInput);
+app.appendChild(ropaBtn);
+app.appendChild(recomendacion);
 
-
+// Mostrar carrito al cargar la página
+mostrarCarrito();
